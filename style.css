@@ -15,7 +15,7 @@
 
 }
 .reproductor{
-    background: rgb(51, 129, 218);
+    background: rgb(89, 161, 243);
     border-radius: 2%;
     width: 400px;
     padding: 25px 35px;
@@ -48,23 +48,7 @@ nav .circle{
 audio{
     margin-top: 10px;
 }
-#progress{
-    width: 100%;
-    height: 6px;
-    background: #333;
-    border-radius: 4px;
-    cursor:  pointer;
-    margin: 40px 0;
-}
-#progress::-webkit-slider-thumb{
-    -webkit-appearance: none;
-    background:  #ffffff;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 8px solid #fff;
-    box-shadow: 0 5px 5px rgba(22, 55, 99, 0.22);
-}
+
 .controls{
     display: flex;  
     justify-content: center;
@@ -82,4 +66,9 @@ audio{
     color: #3f3f3f;
     box-shadow: 0 10px 10px rgba(22, 55, 99, 0.22);
     cursor: pointer;
+}
+.controls div:nth-child(2){
+   transform: scale(1.5); 
+   background: #108bff;
+   color: #fff;
 }
