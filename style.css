@@ -27,6 +27,11 @@
         float: none;
         width: 100%;
     }
+    .fto{
+        width: 25px;
+        background: #3f3f3f27;
+        box-shadow: 0 5px 10px rgba(22, 55, 99, 0.22);
+    }
 }
 nav{
     display: flex;
