@@ -19,23 +19,30 @@
                 </nav>
                 <h1>Flash FM</h1>
                 <img src="archivps/Flash_FM.webp" class="flash">
-                <p>Vice city</p>
+                <p id="patata">Vice city</p>
                 <audio id="song" >
                     <source src="archivps/[SNES] Coffin NailsRapp Snitch Knishes (Super Mario World Styled Remix).mp3" type="audio/mpeg" >
                 </audio>
                 <div class="controls">
                     <div><i class="fa-solid fa-backward"></i></div>
                     <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
-                    <div><i class="fa-solid fa-forward"></i></div>
+                    <div id="next" onclick="next()"><i class="fa-solid fa-forward"></i></div>
                 </div>
             </div>
         </div>
         <script>
             const song = document.querySelector('#song');
             const ctrlIcon = document.getElementById("ctrlIcon");
-
+            let radioList=["radio1","radio2"];
+            
+            let current=0;
+            function next(){
+                current=current+1;
+                document.getElementById("patata").innerHTML=radioList[current%2];
+                
+            };
             function playPause(){
-                if(ctrlIcon.classlist.contains("fa-pause")){
+                if(ctrlIcon.classList.contains("fa-pause")){
                   song.pause(); 
                   ctrlIcon.classList.remove("fa-pause");
                   ctrlIcon.classList.add("fa-play"); 
