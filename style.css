@@ -22,6 +22,12 @@
     padding: 25px 35px;
     text-align: center;
 }
+@media screen and(max-width: 600px) {
+    .reproductor{
+        float: none;
+        width: 100%;
+    }
+}
 nav{
     display: flex;
     justify-content: space-between;
