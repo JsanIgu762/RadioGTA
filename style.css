@@ -12,6 +12,7 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
+    
 
 }
 .reproductor{
@@ -35,8 +36,9 @@ nav .circle{
     color: rgb(18, 77, 145);
     box-shadow: 0 5px 10px rgba(22, 55, 99, 0.22);
     cursor: pointer;
+    display: none;
 }
-.flash{
+.fto{
     width: 220px;
     background: #3f3f3f27;
     box-shadow: 0 5px 10px rgba(22, 55, 99, 0.22);
@@ -69,6 +71,8 @@ audio{
 }
 .controls div:nth-child(2){
    transform: scale(1.5); 
-   background: #108bff;
-   color: #fff;
+   background: #ffffff;
+   color: #3f3f3f;
 }
+
+

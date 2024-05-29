@@ -1,58 +1,142 @@
 <!Doctype html>
 <html>
-    <head>
-        <meta name="viewport" content="width=devide-width, initial-scale=1.0">
-        <title>Radio Grand theft Auto</title>
-        <link rel="stylesheet" href="style.css">
-        <script src="https://kit.fontawesome.com/058d98c334.js" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <div class="container">
-            <div class="reproductor">
-                <nav>
-                    <div class="circle">
-                        <i class="fa-solid fa-angle-left"></i>
-                    </div>
-                    <div class="circle">
-                        <i class="fa-solid fa-bars-staggered"></i>
-                    </div>
-                </nav>
-                <h1>Flash FM</h1>
-                <img src="archivps/Flash_FM.webp" class="flash">
-                <p id="patata">Vice city</p>
-                <audio id="song" >
-                    <source src="archivps/[SNES] Coffin NailsRapp Snitch Knishes (Super Mario World Styled Remix).mp3" type="audio/mpeg" >
-                </audio>
-                <div class="controls">
-                    <div><i class="fa-solid fa-backward"></i></div>
-                    <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
-                    <div id="next" onclick="next()"><i class="fa-solid fa-forward"></i></div>
+
+<head>
+    <meta name="viewport" content="width=devide-width, initial-scale=1.0">
+    <title>Radio Grand theft Auto</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/058d98c334.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="reproductor" id="reproductor">
+            <nav>
+                <div class="circle">
+                    <i class="fa-solid fa-angle-left"></i>
                 </div>
+                <div class="circle">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </div>
+            </nav>
+            <h1 id="Rtit" class="Rtit"></h1>
+            <img src="archivps/Flash_FM.webp" class="fto" id="fto">
+            <p id="Game">Vice city</p>
+            <audio id="song">
+                <source src="archivps/Post Malone ft. 21 Savage - Rockstar (Instrumental).mp3" type="audio/mpeg" >
+            </audio>
+            <div class="controls">
+                <div id="prev" onclick="prev()"><i class="fa-solid fa-backward"></i></div>
+                <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
+                <div id="next" onclick="next()"><i class="fa-solid fa-forward"></i></div>
             </div>
         </div>
-        <script>
-            const song = document.querySelector('#song');
-            const ctrlIcon = document.getElementById("ctrlIcon");
-            let radioList=["radio1","radio2"];
-            
-            let current=0;
-            function next(){
-                current=current+1;
-                document.getElementById("patata").innerHTML=radioList[current%2];
-                
-            };
-            function playPause(){
-                if(ctrlIcon.classList.contains("fa-pause")){
-                  song.pause(); 
-                  ctrlIcon.classList.remove("fa-pause");
-                  ctrlIcon.classList.add("fa-play"); 
+    </div>
+    <script>
+
+        const song = document.querySelector('#song');
+        const ctrlIcon = document.getElementById("ctrlIcon");
+        let radioList = ["Flash FM", "Radio Los Santos", "Fever 105"];
+        document.getElementById("Rtit").innerHTML = radioList[0];
+        let current = 1;
+        var radionom;
+        var audio = document.getElementById("song");
+        var control = document.getElementById("ctrlIcon");
+        function next() {
+            var reproductorcolor = document.getElementById("reproductor");
+
+            current = (current + 1) % radioList.length;
+            radionom = radioList[current];
+            document.getElementById("Rtit").innerHTML = radioList[current];
+
+            if (radionom == "Flash FM") {
+                document.getElementById("fto").src = "archivps/Flash_FM.webp";
+                audio.src = "archivps/Post Malone ft. 21 Savage - Rockstar (Instrumental).mp3";
+                audio.load();
+                if (control.classList.contains("fa-play")) {
+                    audio.pause();
+                } else {
+                    audio.play();
                 }
-                else{
-                    song.play();
-                    ctrlIcon.classList.add("fa-pause");
-                    ctrlIcon.classList.remove("fa-play");
-                }
+                reproductorcolor.style.backgroundColor = "rgb(89, 161, 243)";
             }
-        </script>
-    </body>
+            else if (radionom == "Radio Los Santos") {
+                document.getElementById("fto").src = "archivps/RadioLosSantos.JPG.webp";
+                audio.src = "archivps/yt1s.com - Tekken 3 Arranged OST Eddy Gordo.mp3";
+                audio.load();
+                if (control.classList.contains("fa-play")) {
+                    audio.pause();
+                } else {
+                    audio.play();
+                }
+                reproductorcolor.style.backgroundColor = "rgb(55, 207, 108)";
+            } else {
+                document.getElementById("fto").src = "archivps/Fever_105.webp";
+                audio.src = "archivps/Spoil My Night.mp3";
+                audio.load();
+                if (control.classList.contains("fa-play")) {
+                    audio.pause();
+                } else {
+                    audio.play();
+                }
+                reproductorcolor.style.backgroundColor = "rgb(243, 89, 89)";
+            }
+
+        };
+        function prev() {
+            var reproductorcolor = document.getElementById("reproductor");
+
+            current = (current - 1) % radioList.length;
+            radionom = radioList[current];
+            document.getElementById("Rtit").innerHTML = radioList[current];
+
+            if (radionom == "Flash FM") {
+                document.getElementById("fto").src = "archivps/Flash_FM.webp";
+                audio.src = "archivps/Post Malone ft. 21 Savage - Rockstar (Instrumental).mp3";
+                audio.load();
+                if (control.classList.contains("fa-play")) {
+                    audio.pause();
+                } else {
+                    audio.play();
+                }
+                reproductorcolor.style.backgroundColor = "rgb(89, 161, 243)";
+            }
+            else if (radionom == "Radio Los Santos") {
+                document.getElementById("fto").src = "archivps/RadioLosSantos.JPG.webp";
+                audio.src = "archivps/yt1s.com - Tekken 3 Arranged OST Eddy Gordo.mp3";
+                audio.load();
+                if (control.classList.contains("fa-play")) {
+                    audio.pause();
+                } else {
+                    audio.play();
+                }
+                reproductorcolor.style.backgroundColor = "rgb(55, 207, 108)";
+            } else {
+                document.getElementById("fto").src = "archivps/Fever_105.webp";
+                audio.src = "archivps/Spoil My Night.mp3";
+                audio.load();
+                if (control.classList.contains("fa-play")) {
+                    audio.pause();
+                } else {
+                    audio.play();
+                }
+                reproductorcolor.style.backgroundColor = "rgb(243, 89, 89)";
+            }
+
+        };
+        function playPause() {
+            if (ctrlIcon.classList.contains("fa-pause")) {
+                song.pause();
+                ctrlIcon.classList.remove("fa-pause");
+                ctrlIcon.classList.add("fa-play");
+            }
+            else {
+                song.play();
+                ctrlIcon.classList.add("fa-pause");
+                ctrlIcon.classList.remove("fa-play");
+            }
+        };
+    </script>
+</body>
+
 </html>
