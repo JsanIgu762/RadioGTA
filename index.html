@@ -1,11 +1,13 @@
-<!Doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="es">
 
 <head>
-    <meta name="viewport" content="width=devide-width, initial-scale=1.0">
-    <title>Radio Grand theft Auto</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Radio Grand Theft Auto</title>
     <link rel="stylesheet" href="style.css">
     <script src="https://kit.fontawesome.com/058d98c334.js" crossorigin="anonymous"></script>
+    <script src="https://www.youtube.com/iframe_api"></script>
 </head>
 
 <body>
@@ -22,9 +24,10 @@
             <h1 id="Rtit" class="Rtit"></h1>
             <img src="src/img/Flash_FM.webp" class="fto" id="fto">
             <p id="Game"></p>
-            <audio id="song">
-                <source src="src/songs/Flash FM.mp3" type="audio/mpeg" id="sor">
-            </audio>
+
+            <!-- Reproductor de YouTube embebido -->
+            <div id="player"></div>
+
             <div class="controls">
                 <div id="prev" onclick="prev()"><i class="fa-solid fa-backward"></i></div>
                 <div onclick="playPause()"><i class="fa-solid fa-play" id="ctrlIcon"></i></div>
@@ -32,113 +35,96 @@
             </div>
         </div>
     </div>
-    <script>
 
-        const song = document.querySelector('#song');
-        const ctrlIcon = document.getElementById("ctrlIcon");
+    <script>
+        // Variables
         let radioList = ["Flash FM", "Radio Los Santos", "Fever 105", "CSR 103:9", "K-DST"];
         let gametitle = ["Grand Theft Auto Vice city", "Grand Theft Auto San Andreas", "Grand Theft Auto Vice city", "Grand Theft Auto San Andreas", "Grand Theft Auto San Andreas"];
         let imagen = ["src/img/Flash_FM.webp", "src/img/RadioLosSantos.JPG.webp", "src/img/Fever_105.webp", "src/img/CSR_103.9.webp", "src/img/K-DST_Icon.webp"];
         let color = ["rgb(89, 161, 243)", "rgb(55, 207, 108)", "rgb(243, 89, 89)", "rgb(105, 39, 112)", "rgb(18, 6, 6)"];
-        let cancion = ["src/songs/Flash FM.mp3", "src/songs/Radio Los Santos.mp3", "src/songs/Fever 105.mp3", "src/songs/CSR-103.9.mp3", "src/songs/K-DST.mp3"];
-        document.getElementById("Rtit").innerHTML = radioList[0];
-        document.getElementById("Game").innerHTML = gametitle[0];
+        let videoIDs = ["vqBbPH0aVXY", "B1enO8LC3kk", "VIDEO_ID_3", "VIDEO_ID_4", "VIDEO_ID_5"]; // IDs de YouTube
+
         let current = 0;
-        var audio = document.getElementById("song");
-        var control = document.getElementById("ctrlIcon");
+        let player;
 
-        let tiemposGuardados = new Array(radioList.length).fill(null); // Guarda el tiempo de cada estación
-        let ultimaVez = new Array(radioList.length).fill(Date.now()); // Guarda el tiempo de cambio de estación
+        // Función que se ejecuta cuando la API de YouTube se ha cargado
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                videoId: videoIDs[current], // Cargar el primer video de YouTube
+                events: {
+                    'onReady': onPlayerReady,
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
 
-        // Generar tiempos aleatorios al cargar la página
-        window.onload = function () {
-            let ahora = Date.now();
+        // Esta función se ejecuta cuando el reproductor está listo
+        function onPlayerReady(event) {
+            event.target.playVideo(); // Reproducir el video automáticamente
+        }
 
-            for (let i = 0; i < radioList.length; i++) {
-                tiemposGuardados[i] = Math.floor(Math.random() * 180); // Punto aleatorio entre 0 y 3 minutos
-                ultimaVez[i] = ahora; // Guardamos la hora de inicio
+        // Esta función se ejecuta cuando el estado del reproductor cambia (ej. cuando el video termina)
+        function onPlayerStateChange(event) {
+            if (event.data == YT.PlayerState.ENDED) {
+                console.log("El video ha terminado.");
             }
-
-            cambiarEstacion(); // Iniciar con la primera estación correctamente
-        };
-
-        function next() {
-            guardarTiempoActual();
-            current = (current + 1) % radioList.length;
-            cambiarEstacion();
         }
 
-        function prev() {
-            guardarTiempoActual();
-            current = (current - 1 + radioList.length) % radioList.length;
-            cambiarEstacion();
-        }
-
-        function guardarTiempoActual() {
-            let ahora = Date.now();
-            let tiempoTranscurrido = (ahora - ultimaVez[current]) / 1000; // Convertir ms a segundos
-            tiemposGuardados[current] += tiempoTranscurrido; // Acumular tiempo
-            ultimaVez[current] = ahora; // Actualizar la última vez que estuvimos en esta estación
-        }
-
+        // Cambiar la estación de radio
         function cambiarEstacion() {
+            // Cambiar título y otros elementos visuales
             document.getElementById("Rtit").innerHTML = radioList[current];
             document.getElementById("Game").innerHTML = gametitle[current];
             document.getElementById("fto").src = imagen[current];
-            document.getElementById("sor").src = cancion[current];
             document.getElementById("reproductor").style.background = color[current];
 
-            audio.load();
-            audio.onloadedmetadata = function () {
-                let duracion = audio.duration;
-                let ahora = Date.now();
-                let tiempoTranscurrido = (ahora - ultimaVez[current]) / 1000;
+            // Cargar el video de YouTube con el ID correspondiente
+            player.loadVideoById(videoIDs[current]);
 
-                if (tiemposGuardados[current] === null){
-                    tiemposGuardados[current] = Math.floor(Math.random() * (duracion - 180));
-                }
-                
-                let nuevoTiempo = tiemposGuardados[current] + tiempoTranscurrido;
-
-                if (nuevoTiempo >= duracion) {
-                    nuevoTiempo = 0; // Reiniciar si se pasa del final
-                }
-
-                audio.currentTime = nuevoTiempo;
-                ultimaVez[current] = Date.now(); // Reiniciar contador de tiempo para esta estación
-
-                if (!control.classList.contains("fa-play")) {
-                    audio.play();
-                }
-            };
             // Cambiar color del título si es "K-DST"
             let titulo = document.getElementById("Rtit");
             let game = document.getElementById("Game");
-            if (radioList[current] === "K-DST" || radioList[current] === "CSR 103:9" ) {
-                titulo.style.color = "white"; 
-                if (gametitle[current] === "Grand Theft Auto San Andreas"){
+            if (radioList[current] === "K-DST" || radioList[current] === "CSR 103:9") {
+                titulo.style.color = "white";
+                if (gametitle[current] === "Grand Theft Auto San Andreas") {
                     game.style.color = "white";
-                }else{
+                } else {
                     game.style.color = "black";
                 }
             } else {
                 titulo.style.color = "black";
                 game.style.color = "black";
-            };
-            
-        };
+            }
+        }
 
+        // Función de Play/Pause
         function playPause() {
-            if (ctrlIcon.classList.contains("fa-pause")) {
-                song.pause();
-                ctrlIcon.classList.remove("fa-pause");
-                ctrlIcon.classList.add("fa-play");
+            if (player.getPlayerState() === YT.PlayerState.PLAYING) {
+                player.pauseVideo();
+                document.getElementById("ctrlIcon").classList.remove("fa-pause");
+                document.getElementById("ctrlIcon").classList.add("fa-play");
+            } else {
+                player.playVideo();
+                document.getElementById("ctrlIcon").classList.add("fa-pause");
+                document.getElementById("ctrlIcon").classList.remove("fa-play");
             }
-            else {
-                song.play();
-                ctrlIcon.classList.add("fa-pause");
-                ctrlIcon.classList.remove("fa-play");
-            }
+        }
+
+        // Cambiar a la siguiente estación
+        function next() {
+            current = (current + 1) % radioList.length;
+            cambiarEstacion();
+        }
+
+        // Cambiar a la estación anterior
+        function prev() {
+            current = (current - 1 + radioList.length) % radioList.length;
+            cambiarEstacion();
+        }
+
+        // Iniciar con la primera estación
+        window.onload = function () {
+            cambiarEstacion();
         };
     </script>
 </body>
